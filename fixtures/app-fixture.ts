@@ -14,8 +14,7 @@ export const test = base.extend<{
 				"--user-data-dir",
 				TEST_CONFIG.USER_DATA_DIR,
 				"--disable-workspace-trust",
-				".",
-				"lib\\main.dart",
+				TEST_CONFIG.TEST_PROJECT,
 			],
 			cwd: TEST_CONFIG.TEST_PROJECT,
 			executablePath: TEST_CONFIG.CODE_EXECUTABLE,
@@ -26,7 +25,14 @@ export const test = base.extend<{
 	},
 
 	vsCodePage: async ({ vsCodeApp }, use) => {
-		await use(new VSCodePage(vsCodeApp.page));
+		const vsCodePage = new VSCodePage(vsCodeApp.page);
+		// Wait for some sidebar icons to become visible.
+		await vsCodeApp.page.locator(".activitybar .actions-container .action-item").first().waitFor({ state: "visible", timeout: 5000 });
+		// And some extra for hot file restore.
+		await vsCodeApp.page.waitForTimeout(500);
+
+		await vsCodePage.closeAllFiles();
+		await use(vsCodePage);
 	},
 
 	propertyEditor: async ({ vsCodeApp }, use) => {

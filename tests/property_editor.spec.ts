@@ -16,6 +16,11 @@ test.describe("Property Editor", () => {
     await vsCodePage.clickSidebarButton("Flutter Property Editor");
     await propertyEditor.enableAccessibility();
 
+    // TODO(dantup): Opening the property editor may steal focus and close the command palette. Fix this!
+    await vsCodePage.waitForTimeout(3000);
+
+    await vsCodePage.openFile("lib/main.dart");
+
     // Put the text cursor in MaterialApp in the source
     const editor = vsCodePage.getEditor();
     await editor.click();

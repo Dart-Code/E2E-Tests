@@ -24,6 +24,45 @@ export class VSCodePage {
 		return this.page.getByRole("tab", { name }).locator("a");
 	}
 
+	async closeAllFiles() {
+		const tabs = this.page.locator(".tabs-and-actions-container .tab");
+		while (await tabs.count() > 0) {
+			await this.runCommand("view: revert and close editor");
+			await this.page.waitForTimeout(1000);
+		}
+	}
+
+	async openCommandPalette() {
+		await this.page.locator(".command-center").click();
+		await this.page.waitForTimeout(10);
+		return this.page.getByPlaceholder("Search files by name");
+	}
+
+	async commitInCommandPalette(text: string) {
+		const commandPalette = await this.openCommandPalette();
+		await commandPalette.fill(text);
+		await this.page.waitForTimeout(10);
+		await this.page.keyboard.press("Enter");
+	}
+
+	/**
+	 * Opens a file in the editor.
+	 *
+	 * @param fileSearchPath
+	 */
+	async openFile(fileSearchPath: string) {
+		await this.commitInCommandPalette(fileSearchPath);
+	}
+
+	/**
+	 * Runs a command via the Command Palette.
+	 *
+	 * @param fileSearchPath
+	 */
+	async runCommand(commandSearchText: string) {
+		await this.commitInCommandPalette(`>${commandSearchText}`);
+	}
+
 	/**
 	 * Gets the code editor.
 	 */
