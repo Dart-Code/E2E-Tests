@@ -12,12 +12,14 @@ export const test = base.extend<{
 		const electronApp = await electron.launch({
 			args: [
 				"--user-data-dir",
-				TEST_CONFIG.USER_DATA_DIR,
+				TEST_CONFIG.VSCODE_USER_DATA_DIR,
+				"--extensions-dir",
+				TEST_CONFIG.VSCODE_EXTENSIONS_DIR,
 				"--disable-workspace-trust",
 				TEST_CONFIG.TEST_PROJECT,
 			],
 			cwd: TEST_CONFIG.TEST_PROJECT,
-			executablePath: TEST_CONFIG.CODE_EXECUTABLE,
+			executablePath: TEST_CONFIG.VSCODE_ELECTRON_EXECUTABLE,
 		});
 		const page = await electronApp.firstWindow();
 		await use({ electronApp, page });

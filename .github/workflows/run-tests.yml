@@ -10,18 +10,41 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      path: e2e-tests
+
+    - uses: actions/checkout@v4
+      with:
+        repository: flutter/flutter
+        # ref: branchname
+        path: flutter
+
+    - name: Add Flutter to PATH
+      run: echo "${{github.workspace}}/flutter/bin" >> $GITHUB_PATH
+
+    - name: Create Sample App
+      run: flutter pub get
+      working-directory: e2e-tests/test-apps/flutter_counter
+
+    - name: Install VS Code
+      run: |
+        echo "code code/add-microsoft-repo boolean true" | sudo debconf-set-selections
+        sudo apt update
+        sudo apt install -y code
+
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
 
     - name: Install dependencies
+      working-directory: e2e-tests
       run: npm ci
 
     - name: Run tests
+      working-directory: e2e-tests
       run: npm test
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: playwright-report/
+        path: e2e-tests/playwright-report/

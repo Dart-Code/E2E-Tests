@@ -5,11 +5,7 @@ import { ExtensionInstaller } from "../utils";
 
 test.describe("Property Editor", () => {
   test.beforeAll(async () => {
-    await ExtensionInstaller.installExtensions(
-      TEST_CONFIG.CODE_EXECUTABLE,
-      TEST_CONFIG.CODE_CLI,
-      TEST_CONFIG.USER_DATA_DIR
-    );
+    await ExtensionInstaller.installExtensions();
   });
 
   test("should be able to modify arguments", async ({ vsCodePage, propertyEditor }, testInfo) => {
