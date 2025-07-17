@@ -18,6 +18,7 @@ jobs:
         repository: flutter/flutter
         ref: beta
         path: flutter
+        fetch-depth: 0
 
     - name: Add Flutter to PATH
       run: echo "${{github.workspace}}/flutter/bin" >> $GITHUB_PATH
