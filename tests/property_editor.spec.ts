@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
-import { TEST_CONFIG } from "../config/test-config";
-import { test } from "../fixtures/app-fixture";
-import { ExtensionInstaller } from "../utils/extensions-installer";
+import { TEST_CONFIG } from "../config";
+import { test } from "../fixtures";
+import { ExtensionInstaller } from "../utils";
 
 test.describe("Property Editor", () => {
   test.beforeAll(async () => {

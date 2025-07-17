@@ -1,8 +1,7 @@
 import { _electron as electron, ElectronApplication, Page } from "playwright";
-import { VSCodePage } from "../pages/vs_code";
-import { PropertyEditorPage } from "../pages/property_editor";
+import { VSCodePage, PropertyEditorPage } from "../pages";
 import { test as base } from "@playwright/test";
-import { TEST_CONFIG } from "../config/test-config";
+import { TEST_CONFIG } from "../config";
 
 export const test = base.extend<{
 	vsCodeApp: { electronApp: ElectronApplication; page: Page };
