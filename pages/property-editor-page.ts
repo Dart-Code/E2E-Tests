@@ -1,15 +1,18 @@
-import { FrameLocator, Locator, Page } from "@playwright/test";
+import { expect, Frame, FrameLocator, Locator, Page } from "@playwright/test";
 
 /**
  * Handles interactions with the Flutter Property Editor.
  */
 export class PropertyEditorPage {
-	private devToolsFrame: FrameLocator;
+	constructor(private readonly devToolsFrame: FrameLocator) { }
 
-	constructor(page: Page) {
-		this.devToolsFrame = page.locator("iframe").first().contentFrame()
-			.locator("iframe[title='Flutter Property Editor']").contentFrame()
-			.locator("#devToolsFrame").contentFrame();
+	/**
+	 * Waits for the Property Editor to show the welcome text.
+	 */
+	async waitForLoad() {
+		await this.devToolsFrame
+			.getByText("Welcome to the Flutter Property Editor")
+			.waitFor({ state: 'visible' });
 	}
 
 	/**
@@ -28,10 +31,13 @@ export class PropertyEditorPage {
 	 *
 	 * @param name - The name of the property input field
 	 */
-	getPropertyInput(name: string) {
+	async getPropertyInput(name: string) {
 		// TODO(dantup): Put better Semantics() around these inputs so this is more specific.
 		// return devToolsFrame.locator(`[flt-semantics-identifier='property_${name}'] input`);
-		return this.devToolsFrame.locator(`input[aria-label$=' ${name}']`);
+		const input = this.devToolsFrame.locator(`input[aria-label$=' ${name}']`);
+		await input.waitFor({ state: 'attached' });
+		return input;
+
 	}
 
 	/**

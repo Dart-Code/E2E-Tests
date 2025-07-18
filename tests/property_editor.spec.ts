@@ -1,16 +1,17 @@
 import { expect } from "@playwright/test";
-import { TEST_CONFIG } from "../config";
 import { test } from "../fixtures";
 import { ExtensionInstaller } from "../utils";
+import { PropertyEditorPage } from "../pages";
 
 test.describe("Property Editor", () => {
   test.beforeAll(async () => {
     await ExtensionInstaller.installExtensions();
   });
 
-  test("should be able to modify arguments", async ({ vsCodePage, propertyEditor }, testInfo) => {
-    await vsCodePage.clickSidebarButton("Flutter Property Editor");
+  test("should be able to modify arguments", async ({ vsCodePage }, testInfo) => {
+    const propertyEditor = await vsCodePage.showPropertyEditor();
     await propertyEditor.enableAccessibility();
+    await propertyEditor.waitForLoad();
 
     // TODO(dantup): Opening the property editor may steal focus and close the command palette. Fix this!
     await vsCodePage.waitForTimeout(3000);
@@ -23,7 +24,7 @@ test.describe("Property Editor", () => {
     await editor.getByText("MaterialApp").click();
 
     // Find the input for the title property
-    const titleInput = propertyEditor.getPropertyInput("title");
+    const titleInput = await propertyEditor.getPropertyInput("title");
 
     // Update the text multiple times so we don't rely on the original value not matching
     // the new value

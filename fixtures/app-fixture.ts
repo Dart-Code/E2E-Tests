@@ -1,12 +1,11 @@
 import { _electron as electron, ElectronApplication, Page } from "playwright";
 import { VSCodePage, PropertyEditorPage } from "../pages";
-import { test as base } from "@playwright/test";
+import { test as base, Frame } from "@playwright/test";
 import { TEST_CONFIG } from "../config";
 
 export const test = base.extend<{
 	vsCodeApp: { electronApp: ElectronApplication; page: Page };
 	vsCodePage: VSCodePage;
-	propertyEditor: PropertyEditorPage;
 }>({
 	vsCodeApp: async ({ }, use) => {
 		const electronApp = await electron.launch({
@@ -36,8 +35,4 @@ export const test = base.extend<{
 		await vsCodePage.closeAllFiles();
 		await use(vsCodePage);
 	},
-
-	propertyEditor: async ({ vsCodeApp }, use) => {
-		await use(new PropertyEditorPage(vsCodeApp.page));
-	}
 });

@@ -1,4 +1,6 @@
 import { Page, TestInfo } from "@playwright/test";
+import { DevToolsFrameFinder } from "../utils/devtools-frame-finder";
+import { PropertyEditorPage } from "./property-editor-page";
 
 /**
  * Handles VS Code interactions.
@@ -22,6 +24,16 @@ export class VSCodePage {
 	 */
 	getSidebarButton(name: string) {
 		return this.page.getByRole("tab", { name }).locator("a");
+	}
+
+	findDevToolsIframe(title: string) {
+		return DevToolsFrameFinder.findInSidebar(this.page, title);
+	}
+
+	async showPropertyEditor() {
+		await this.clickSidebarButton("Flutter Property Editor");
+		const frame = await this.findDevToolsIframe("Flutter Property Editor");
+		return new PropertyEditorPage(frame);
 	}
 
 	async closeAllFiles() {
