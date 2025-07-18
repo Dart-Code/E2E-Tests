@@ -59,3 +59,11 @@ jobs:
         path: |
           e2e-tests/playwright-report/
           e2e-tests/test-results/
+
+    - name: Create CTRF format from Playwright results
+      if: ${{ !cancelled() }}
+      run: npx -y playwright-ctrf-json-reporter --inputDir=./e2e-tests/test-results --outputFile=ctrf-report.json
+
+    - name: Set CTRF results as GitHub summary
+      if: ${{ !cancelled() }}
+      run: npx -y github-actions-ctrf ctrf-report.json

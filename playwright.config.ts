@@ -13,7 +13,10 @@ export default defineConfig({
 	globalTimeout: 30 * 60 * 1000, // 30 min
 	// TODO(dantup): Test this.
 	// reporter: process.env.CI ? 'github' : 'list',
-	reporter: [['html', { open: 'never' }]],
+	reporter: [
+		['html', { open: 'never' }],
+		['json', { outputFile: 'results.json' }]
+	],
 	use: {
 		trace: 'retain-on-failure',
 		screenshot: 'on',
