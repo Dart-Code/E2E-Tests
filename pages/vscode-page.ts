@@ -40,14 +40,18 @@ export class VSCodePage {
 		const tabs = this.page.locator(".tabs-and-actions-container .tab");
 		while (await tabs.count() > 0) {
 			await this.runCommand("view: revert and close editor");
-			await this.page.waitForTimeout(1000);
+			await this.page.waitForTimeout(100);
 		}
 	}
 
 	async openCommandPalette() {
 		await this.page.locator(".command-center").click();
-		await this.page.waitForTimeout(10);
-		return this.page.getByPlaceholder("Search files by name");
+		const input = this.page.getByPlaceholder("Search files by name");
+		// TODO(dantup): Without this wait, on CI we seem to sometimes
+		//  try typing in the input before it's visible, even though
+		//  fill() is supposed to wait for actionability 🤷‍♂️.
+		await input.waitFor({ state: "visible" });
+		return input;
 	}
 
 	async commitInCommandPalette(text: string) {
