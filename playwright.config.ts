@@ -15,7 +15,7 @@ export default defineConfig({
 	// reporter: process.env.CI ? 'github' : 'list',
 	reporter: [
 		['html', { open: 'never' }],
-		['json', { outputFile: 'results.json' }]
+		['playwright-ctrf-json-reporter', { outputDir: 'test-results', outputFile: 'ctrf-report.json' }]
 	],
 	use: {
 		trace: 'retain-on-failure',
