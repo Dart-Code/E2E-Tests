@@ -25,7 +25,7 @@ test.describe("Property Editor", () => {
     for (let i = 0; i < 5; i++) {
       const newTitle = `New Flutter Demo ${i}`;
       await propertyEditor.updatePropertyValue(titleInput, newTitle);
-      await expect(editor).toContainText(`titlTESTFAILe: '${newTitle}',`);
+      await expect(editor).toContainText(`title: '${newTitle}',`);
 
       // TODO(dantup): We need a hook for knowing when the editor has updated again.
       //  Could/should we disable the fields while the edit request is in-flight?
