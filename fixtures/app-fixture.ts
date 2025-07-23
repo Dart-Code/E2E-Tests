@@ -8,19 +8,21 @@ export const test = base.extend<{
 	vsCodePage: VSCodePage;
 }>({
 	vsCodeApp: async ({ }, use) => {
+		const args = [
+			"--user-data-dir",
+			TEST_CONFIG.VSCODE_USER_DATA_DIR,
+			"--extensions-dir",
+			TEST_CONFIG.VSCODE_EXTENSIONS_DIR,
+			"--disable-workspace-trust",
+			"--extensionDevelopmentPath",
+			TEST_CONFIG.DART_CODE_EXTENSION_DIR,
+			"--extensionDevelopmentPath",
+			TEST_CONFIG.FLUTTER_CODE_EXTENSION_DIR,
+			TEST_CONFIG.TEST_PROJECT_DIR,
+		];
+		console.log(`Launching VS Code as Electron app with args: ${args.join(" ")}`);
 		const electronApp = await electron.launch({
-			args: [
-				"--user-data-dir",
-				TEST_CONFIG.VSCODE_USER_DATA_DIR,
-				"--extensions-dir",
-				TEST_CONFIG.VSCODE_EXTENSIONS_DIR,
-				"--disable-workspace-trust",
-				"--extensionDevelopmentPath",
-				TEST_CONFIG.DART_CODE_EXTENSION_DIR,
-				"--extensionDevelopmentPath",
-				TEST_CONFIG.FLUTTER_CODE_EXTENSION_DIR,
-				TEST_CONFIG.TEST_PROJECT_DIR,
-			],
+			args,
 			cwd: TEST_CONFIG.TEST_PROJECT_DIR,
 			executablePath: TEST_CONFIG.VSCODE_ELECTRON_EXECUTABLE,
 		});

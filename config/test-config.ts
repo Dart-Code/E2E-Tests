@@ -29,8 +29,8 @@ const vsCodeElectronExecutable = path.normalize(path.join(path.dirname(vsCodeCli
 export const TEST_CONFIG = {
 	VSCODE_CLI_SCRIPT: vsCodeCliScript,
 	VSCODE_ELECTRON_EXECUTABLE: vsCodeElectronExecutable,
-	DART_CODE_EXTENSION_DIR: path.resolve(__e2etests, "Dart-Code"),
-	FLUTTER_CODE_EXTENSION_DIR: path.resolve(__e2etests, "Flutter-Code"),
+	DART_CODE_EXTENSION_DIR: path.resolve(__e2etests, "../Dart-Code"),
+	FLUTTER_CODE_EXTENSION_DIR: path.resolve(__e2etests, "../Flutter-Code"),
 	TEST_PROJECT_DIR: path.resolve(__e2etests, "test-apps/flutter_counter"),
 	VSCODE_USER_DATA_DIR: path.resolve(__e2etests, "vscode-data/user-data-dir"),
 	VSCODE_EXTENSIONS_DIR: path.resolve(__e2etests, "vscode-data/extensions-dir"),
