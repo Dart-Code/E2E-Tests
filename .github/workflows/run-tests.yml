@@ -53,11 +53,7 @@ jobs:
       working-directory: Flutter-Code
 
     - name: Checkout Flutter SDK
-      uses: actions/checkout@v4
-      with:
-        repository: flutter/flutter
-        path: flutter
-        fetch-tags: true
+      run: git clone https://github.com/flutter/flutter
 
     - name: Add Flutter SDK to PATH
       run: echo "${{github.workspace}}/flutter/bin" >> $GITHUB_PATH
