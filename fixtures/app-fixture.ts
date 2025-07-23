@@ -31,8 +31,8 @@ export const test = base.extend<{
 		await electronApp.close();
 	},
 
-	vsCodePage: async ({ vsCodeApp }, use) => {
-		const vsCodePage = new VSCodePage(vsCodeApp.page);
+	vsCodePage: async ({ vsCodeApp }, use, testInfo) => {
+		const vsCodePage = new VSCodePage(vsCodeApp.page, testInfo);
 		// Wait for some sidebar icons to become visible.
 		await vsCodeApp.page.locator(".activitybar .actions-container .action-item").first().waitFor({ state: "visible", timeout: 5000 });
 		// And some extra for hot file restore.

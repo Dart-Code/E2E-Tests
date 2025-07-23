@@ -27,6 +27,7 @@ const vsCodeCliScript = path.normalize(path.join(path.dirname(vsCodeCliExecutabl
 const vsCodeElectronExecutable = path.normalize(path.join(path.dirname(vsCodeCliExecutable), "..", vsCodeExecutableName));
 
 export const TEST_CONFIG = {
+	DEBUG: true,
 	VSCODE_CLI_SCRIPT: vsCodeCliScript,
 	VSCODE_ELECTRON_EXECUTABLE: vsCodeElectronExecutable,
 	DART_CODE_EXTENSION_DIR: path.resolve(__e2etests, "../Dart-Code"),
