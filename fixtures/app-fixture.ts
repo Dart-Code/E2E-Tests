@@ -20,7 +20,7 @@ export const test = base.extend<{
 			TEST_CONFIG.FLUTTER_CODE_EXTENSION_DIR,
 			TEST_CONFIG.TEST_PROJECT_DIR,
 		];
-		console.log(`Launching VS Code as Electron app with args: ${args.join(" ")}`);
+		// console.log(`Launching VS Code as Electron app with args: ${args.join(" ")}`);
 		const electronApp = await electron.launch({
 			args,
 			cwd: TEST_CONFIG.TEST_PROJECT_DIR,
