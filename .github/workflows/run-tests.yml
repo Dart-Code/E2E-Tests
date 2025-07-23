@@ -4,6 +4,9 @@ on:
     branches:
       - main
   pull_request:
+  schedule:
+     - cron: '0 6 * * *' # 6am daily
+  workflow_dispatch:
 
 jobs:
   test:
@@ -96,3 +99,22 @@ jobs:
     - name: Set CTRF results as GitHub summary
       if: ${{ !cancelled() }}
       run: npx -y github-actions-ctrf e2e-tests/test-results/ctrf-report.json
+
+
+
+  notify_failure:
+
+    permissions:
+      contents: none
+    name: Notify Discord of Failure
+    needs: test
+    if: failure() && github.event_name == 'push' || failure() && github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Send notification to Discord
+        run: 'Invoke-WebRequest -Headers @{ "Content-Type" = "application/json" } -Method Post -Body "{`"content`":`"Build failed on $($env:GITHUB_REF.Replace(`"refs/heads/`", `"`")): https://github.com/Dart-Code/E2E-Tests/commit/$($env:GITHUB_SHA)/checks`"}" -Uri $env:DISCORD_WEBHOOK'
+        shell: pwsh
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
