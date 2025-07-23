@@ -1,7 +1,8 @@
+import { test as base } from "@playwright/test";
+import path from "path";
 import { _electron as electron, ElectronApplication, Page } from "playwright";
-import { VSCodePage, PropertyEditorPage } from "../pages";
-import { test as base, Frame } from "@playwright/test";
 import { TEST_CONFIG } from "../config";
+import { VSCodePage } from "../pages";
 
 export const test = base.extend<{
 	vsCodeApp: { electronApp: ElectronApplication; page: Page };
@@ -15,9 +16,14 @@ export const test = base.extend<{
 				"--extensions-dir",
 				TEST_CONFIG.VSCODE_EXTENSIONS_DIR,
 				"--disable-workspace-trust",
-				TEST_CONFIG.TEST_PROJECT,
+				// "--disable-extensions",
+				"--extensionDevelopmentPath",
+				path.resolve(TEST_CONFIG.E2E_PROJECT_DIR, "../Flutter-Code"),
+				"--extensionDevelopmentPath",
+				path.resolve(TEST_CONFIG.E2E_PROJECT_DIR, "../Dart-Code"),
+				TEST_CONFIG.TEST_PROJECT_DIR,
 			],
-			cwd: TEST_CONFIG.TEST_PROJECT,
+			cwd: TEST_CONFIG.TEST_PROJECT_DIR,
 			executablePath: TEST_CONFIG.VSCODE_ELECTRON_EXECUTABLE,
 		});
 		const page = await electronApp.firstWindow();

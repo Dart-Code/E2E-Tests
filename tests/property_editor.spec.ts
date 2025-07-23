@@ -4,10 +4,6 @@ import { ExtensionInstaller } from "../utils";
 import { PropertyEditorPage } from "../pages";
 
 test.describe("Property Editor", () => {
-  test.beforeAll(async () => {
-    await ExtensionInstaller.installExtensions();
-  });
-
   test("should be able to modify arguments", async ({ vsCodePage }, testInfo) => {
     const propertyEditor = await vsCodePage.showPropertyEditor();
     await propertyEditor.enableAccessibility();
