@@ -1,23 +1,29 @@
+import { test as base } from "@playwright/test";
 import { _electron as electron, ElectronApplication, Page } from "playwright";
-import { VSCodePage, PropertyEditorPage } from "../pages";
-import { test as base, Frame } from "@playwright/test";
 import { TEST_CONFIG } from "../config";
+import { VSCodePage } from "../pages";
 
 export const test = base.extend<{
 	vsCodeApp: { electronApp: ElectronApplication; page: Page };
 	vsCodePage: VSCodePage;
 }>({
 	vsCodeApp: async ({ }, use) => {
+		const args = [
+			"--user-data-dir",
+			TEST_CONFIG.VSCODE_USER_DATA_DIR,
+			"--extensions-dir",
+			TEST_CONFIG.VSCODE_EXTENSIONS_DIR,
+			"--disable-workspace-trust",
+			"--extensionDevelopmentPath",
+			TEST_CONFIG.DART_CODE_EXTENSION_DIR,
+			"--extensionDevelopmentPath",
+			TEST_CONFIG.FLUTTER_CODE_EXTENSION_DIR,
+			TEST_CONFIG.TEST_PROJECT_DIR,
+		];
+		// console.log(`Launching VS Code as Electron app with args: ${args.join(" ")}`);
 		const electronApp = await electron.launch({
-			args: [
-				"--user-data-dir",
-				TEST_CONFIG.VSCODE_USER_DATA_DIR,
-				"--extensions-dir",
-				TEST_CONFIG.VSCODE_EXTENSIONS_DIR,
-				"--disable-workspace-trust",
-				TEST_CONFIG.TEST_PROJECT,
-			],
-			cwd: TEST_CONFIG.TEST_PROJECT,
+			args,
+			cwd: TEST_CONFIG.TEST_PROJECT_DIR,
 			executablePath: TEST_CONFIG.VSCODE_ELECTRON_EXECUTABLE,
 		});
 		const page = await electronApp.firstWindow();

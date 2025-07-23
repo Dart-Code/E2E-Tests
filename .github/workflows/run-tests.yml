@@ -10,18 +10,51 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+
+    - name: Set up NodeJS
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+
+    - name: Checkout E2E tests
+      uses: actions/checkout@v4
       with:
         path: e2e-tests
 
-    - uses: actions/checkout@v4
+    - name: Checkout Dart extension
+      uses: actions/checkout@v4
+      with:
+        repository: Dart-Code/Dart-Code
+        path: Dart-Code
+        submodules: 'recursive'
+
+    - name: Build Dart extension
+      run: |
+        npm ci
+        npm run vscode:prepublish
+      working-directory: Dart-Code
+
+    - name: Checkout Flutter extension
+      uses: actions/checkout@v4
+      with:
+        repository: Dart-Code/Flutter
+        path: Flutter-Code
+
+    - name: Build Flutter extension
+      run: |
+        npm ci
+        npm run vscode:prepublish
+      working-directory: Flutter-Code
+
+    - name: Checkout Flutter SDK
+      uses: actions/checkout@v4
       with:
         repository: flutter/flutter
         ref: beta
         path: flutter
         fetch-tags: true
 
-    - name: Add Flutter to PATH
+    - name: Add Flutter SDK to PATH
       run: echo "${{github.workspace}}/flutter/bin" >> $GITHUB_PATH
 
     - name: Run 'flutter doctor'
@@ -41,10 +74,6 @@ jobs:
         sudo apt update
         sudo apt install -y code
 
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-
     - name: Install dependencies
       working-directory: e2e-tests
       run: npm ci
@@ -53,7 +82,8 @@ jobs:
       working-directory: e2e-tests
       run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" npm test
 
-    - uses: actions/upload-artifact@v4
+    - name: Upload test result artifacts
+      uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-reports
