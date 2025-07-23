@@ -1,12 +1,13 @@
 import { Page, TestInfo } from "@playwright/test";
 import { DevToolsFrameFinder } from "../utils/devtools-frame-finder";
 import { PropertyEditorPage } from "./property-editor-page";
+import { TEST_CONFIG } from "../config";
 
 /**
  * Handles VS Code interactions.
  */
 export class VSCodePage {
-	constructor(private page: Page) { }
+	constructor(private readonly page: Page, private readonly testInfo: TestInfo) { }
 
 	/**
 	 * Clicks a sidebar button by name.
@@ -55,10 +56,15 @@ export class VSCodePage {
 	}
 
 	async commitInCommandPalette(text: string) {
+		await this.debugScreenshot('before command palette');
 		const commandPalette = await this.openCommandPalette();
+		await this.debugScreenshot('with command palette open');
 		await commandPalette.fill(text);
+		await this.debugScreenshot('after typing');
 		await this.page.waitForTimeout(10);
+		await this.debugScreenshot('before <enter>');
 		await this.page.keyboard.press("Enter");
+		await this.debugScreenshot('after <enter>');
 	}
 
 	/**
@@ -86,14 +92,26 @@ export class VSCodePage {
 		return this.page.locator(".monaco-editor");
 	}
 
+	private screenshotNumber = 1;
+
+	/**
+	 * Takes a screenshot if config is set to debug to help track down flakes.
+	 *
+	 * Calls to this method are temporary and should be removed once the flakes are fixed.
+	 */
+	async debugScreenshot(name: string) {
+		if (TEST_CONFIG.DEBUG) {
+			await this.screenshot(name);
+		}
+	}
+
 	/**
 	 * Takes a screenshot and attaches it to the test report.
 	 *
 	 * @param name - Name for the screenshot
-	 * @param testInfo - Playwright test info object
 	 */
-	async screenshot(name: string, testInfo: TestInfo) {
-		return testInfo.attach(name, {
+	async screenshot(name: string) {
+		return this.testInfo.attach(`${this.screenshotNumber++}: ${name}`, {
 			body: await this.page.screenshot(),
 			contentType: 'image/png'
 		});
