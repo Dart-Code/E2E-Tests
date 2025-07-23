@@ -26,6 +26,7 @@ jobs:
       with:
         repository: Dart-Code/Dart-Code
         path: Dart-Code
+        submodules: 'recursive'
 
     - name: Build Dart extension
       run: npm run vscode:prepublish
