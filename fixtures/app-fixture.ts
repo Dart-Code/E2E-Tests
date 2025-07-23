@@ -1,5 +1,4 @@
 import { test as base } from "@playwright/test";
-import path from "path";
 import { _electron as electron, ElectronApplication, Page } from "playwright";
 import { TEST_CONFIG } from "../config";
 import { VSCodePage } from "../pages";
@@ -16,11 +15,10 @@ export const test = base.extend<{
 				"--extensions-dir",
 				TEST_CONFIG.VSCODE_EXTENSIONS_DIR,
 				"--disable-workspace-trust",
-				// "--disable-extensions",
 				"--extensionDevelopmentPath",
-				path.resolve(TEST_CONFIG.E2E_PROJECT_DIR, "../Flutter-Code"),
+				TEST_CONFIG.DART_CODE_EXTENSION_DIR,
 				"--extensionDevelopmentPath",
-				path.resolve(TEST_CONFIG.E2E_PROJECT_DIR, "../Dart-Code"),
+				TEST_CONFIG.FLUTTER_CODE_EXTENSION_DIR,
 				TEST_CONFIG.TEST_PROJECT_DIR,
 			],
 			cwd: TEST_CONFIG.TEST_PROJECT_DIR,

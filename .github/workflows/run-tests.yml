@@ -29,7 +29,9 @@ jobs:
         submodules: 'recursive'
 
     - name: Build Dart extension
-      run: npm run vscode:prepublish
+      run: |
+        npm ci
+        npm run vscode:prepublish
       working-directory: Dart-Code
 
     - name: Checkout Flutter extension
@@ -39,7 +41,9 @@ jobs:
         path: Flutter-Code
 
     - name: Build Flutter extension
-      run: npm run vscode:prepublish
+      run: |
+        npm install
+        npm run vscode:prepublish
       working-directory: Flutter-Code
 
     - name: Checkout Flutter SDK

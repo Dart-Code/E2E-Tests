@@ -1,6 +1,3 @@
-import { spawn } from "child_process";
-import path from "path";
-import { TEST_CONFIG } from "../config";
 import { Frame, FrameLocator, Page } from "@playwright/test";
 
 /**

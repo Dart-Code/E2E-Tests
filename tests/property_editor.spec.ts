@@ -1,7 +1,5 @@
 import { expect } from "@playwright/test";
 import { test } from "../fixtures";
-import { ExtensionInstaller } from "../utils";
-import { PropertyEditorPage } from "../pages";
 
 test.describe("Property Editor", () => {
   test("should be able to modify arguments", async ({ vsCodePage }, testInfo) => {

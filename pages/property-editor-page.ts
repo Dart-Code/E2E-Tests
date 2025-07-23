@@ -1,4 +1,4 @@
-import { expect, Frame, FrameLocator, Locator, Page } from "@playwright/test";
+import { FrameLocator, Locator } from "@playwright/test";
 
 /**
  * Handles interactions with the Flutter Property Editor.
