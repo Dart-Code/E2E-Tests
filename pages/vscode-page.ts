@@ -89,7 +89,7 @@ export class VSCodePage {
 	 * Gets the code editor.
 	 */
 	getEditor() {
-		return this.page.locator(".monaco-editor");
+		return this.page.locator(".monaco-editor[data-uri^=\"file://\"]");
 	}
 
 	private screenshotNumber = 1;
