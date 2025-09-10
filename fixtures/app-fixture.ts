@@ -25,6 +25,13 @@ export const test = base.extend<{
 			args,
 			cwd: TEST_CONFIG.TEST_PROJECT_DIR,
 			executablePath: TEST_CONFIG.VSCODE_ELECTRON_EXECUTABLE,
+
+			// We must set a locale explicitly, because otherwise Playwright will infer it from the LANG
+			// env variable which is "C.UTF-8" and results in ["en-US", "c"] which triggers an unhandled
+			// exception in Flutter/DevTools when trying to parse the languages.
+			//
+			// https://github.com/Dart-Code/E2E-Tests/issues/4#issuecomment-3274908610
+			locale: "en-US",
 		});
 		const page = await electronApp.firstWindow();
 		await use({ electronApp, page });
