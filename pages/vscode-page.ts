@@ -1,7 +1,8 @@
 import { Page, TestInfo } from "@playwright/test";
-import { DevToolsFrameFinder } from "../utils/devtools-frame-finder";
+import { EmbeddedFrameFinder } from "../utils/embedded-frame-finder";
 import { PropertyEditorPage } from "./property-editor-page";
 import { TEST_CONFIG } from "../config";
+import { WidgetPreviewPage } from "./widget-preview-page";
 
 /**
  * Handles VS Code interactions.
@@ -27,14 +28,20 @@ export class VSCodePage {
 		return this.page.getByRole("tab", { name }).locator("a");
 	}
 
-	findDevToolsIframe(title: string) {
-		return DevToolsFrameFinder.findInSidebar(this.page, title);
+	findEmbeddedFrame(title: string) {
+		return EmbeddedFrameFinder.findInSidebar(this.page, title);
 	}
 
 	async showPropertyEditor() {
 		await this.clickSidebarButton("Flutter Property Editor");
-		const frame = await this.findDevToolsIframe("Flutter Property Editor");
+		const frame = await this.findEmbeddedFrame("Flutter Property Editor");
 		return new PropertyEditorPage(frame);
+	}
+
+	async showWidgetPreview() {
+		await this.clickSidebarButton("Flutter Widget Preview");
+		const frame = await this.findEmbeddedFrame("Flutter Widget Preview");
+		return new WidgetPreviewPage(frame);
 	}
 
 	async closeAllFiles() {
@@ -43,6 +50,11 @@ export class VSCodePage {
 			await this.runCommand("view: revert and close editor");
 			await this.page.waitForTimeout(100);
 		}
+	}
+
+	async saveAllFiles() {
+		await this.runCommand("file: save all files");
+		await this.page.waitForTimeout(100);
 	}
 
 	async openCommandPalette() {
