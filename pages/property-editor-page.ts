@@ -1,29 +1,21 @@
 import { FrameLocator, Locator } from "@playwright/test";
+import { EmbeddedFramePage } from "./embedded_frame_page";
 
 /**
  * Handles interactions with the Flutter Property Editor.
  */
-export class PropertyEditorPage {
-	constructor(private readonly devToolsFrame: FrameLocator) { }
+export class PropertyEditorPage extends EmbeddedFramePage {
+	constructor(frame: FrameLocator) {
+		super(frame);
+	}
 
 	/**
 	 * Waits for the Property Editor to show the welcome text.
 	 */
 	async waitForLoad() {
-		await this.devToolsFrame
+		await this.frame
 			.getByText("Welcome to the Flutter Property Editor")
 			.waitFor({ state: 'visible' });
-	}
-
-	/**
-	 * Enables accessibility in the Flutter app so we can locate things using the semantics tree.
-	 */
-	async enableAccessibility(): Promise<void> {
-		const accessibilityButton = this.devToolsFrame.locator(
-			"flt-semantics-placeholder[role='button'][aria-label='Enable accessibility']"
-		);
-		await accessibilityButton.waitFor({ state: 'attached' });
-		return accessibilityButton.dispatchEvent("click");
 	}
 
 	/**
@@ -34,10 +26,9 @@ export class PropertyEditorPage {
 	async getPropertyInput(name: string) {
 		// TODO(dantup): Put better Semantics() around these inputs so this is more specific.
 		// return devToolsFrame.locator(`[flt-semantics-identifier='property_${name}'] input`);
-		const input = this.devToolsFrame.locator(`input[aria-label$=' ${name}']`);
+		const input = this.frame.locator(`input[aria-label$=' ${name}']`);
 		await input.waitFor({ state: 'attached' });
 		return input;
-
 	}
 
 	/**

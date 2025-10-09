@@ -33,6 +33,6 @@ test.describe("Property Editor", () => {
     }
 
     // Attach a screenshot to the report
-    await vsCodePage.screenshot('final-screenshot', testInfo);
+    await vsCodePage.screenshot('final-screenshot');
   });
 });

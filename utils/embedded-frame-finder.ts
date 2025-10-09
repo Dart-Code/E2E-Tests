@@ -1,21 +1,22 @@
 import { Frame, FrameLocator, Page } from "@playwright/test";
 
 /**
- * Utility class for finding DevTools iframes.
+ * Utility class for finding embedded iframes.
  */
-export class DevToolsFrameFinder {
+export class EmbeddedFrameFinder {
 	/**
-	 * Finds a given DevTools iframe in the sidebar.
+	 * Finds a given iframe in the sidebar.
 	 */
 	static async findInSidebar(page: Page, title: string): Promise<FrameLocator> {
 		var searching = true;
 		var timeoutTimeout: NodeJS.Timeout;
 
 		const propertyEditorFrame = await new Promise<Frame>(async (resolve, reject) => {
+			const foundFrameTitles = new Set<string>();
 			timeoutTimeout = setTimeout(() => {
 				if (searching) {
 					searching = false;
-					reject(`Failed to find Flutter Property Editor frame within timeout`);
+					reject(`Failed to find iframe "${title}" within timeout. Found: ${[...foundFrameTitles].map((title) => `"${title}"`).join(", ")}`);
 				}
 			}, 30000);
 
@@ -25,6 +26,8 @@ export class DevToolsFrameFinder {
 					try {
 						const frameElement = await frame.frameElement();
 						const frameTitle = await frameElement.getAttribute("title");
+						if (frameTitle)
+							foundFrameTitles.add(frameTitle);
 						if (frameTitle == title) {
 							searching = false;
 							clearTimeout(timeoutTimeout);
@@ -41,6 +44,6 @@ export class DevToolsFrameFinder {
 			}
 		});
 
-		return propertyEditorFrame.frameLocator("iframe#devToolsFrame");
+		return propertyEditorFrame.frameLocator("iframe");
 	}
 }
