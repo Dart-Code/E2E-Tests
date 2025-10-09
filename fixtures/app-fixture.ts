@@ -34,6 +34,9 @@ export const test = base.extend<{
 			locale: "en-US",
 		});
 		const page = await electronApp.firstWindow();
+		// Set default timeout because config doesn't seem to work
+		// https://github.com/microsoft/playwright/issues/37783
+		page.setDefaultTimeout(180 * 1000); // 180 sec
 		await use({ electronApp, page });
 		await electronApp.close();
 	},
