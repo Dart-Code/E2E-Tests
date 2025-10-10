@@ -1,4 +1,3 @@
-import { expect } from "@playwright/test";
 import { test } from "../fixtures";
 
 test.describe("Widget Preview", () => {
