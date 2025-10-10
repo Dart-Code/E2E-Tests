@@ -1,3 +1,8 @@
 {
+	// Fit more of the code editor on screen so we can find text easily without scrolling.
+	"workbench.secondarySideBar.defaultVisibility": "hidden",
+	"editor.minimap.enabled": false,
+	"editor.fontSize": 12,
+	// Temp:
 	"dart.experimentalFlutterWidgetPreview": true,
 }
