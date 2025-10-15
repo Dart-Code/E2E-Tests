@@ -11,14 +11,14 @@ export class EmbeddedFrameFinder {
 		var searching = true;
 		var timeoutTimeout: NodeJS.Timeout;
 
-		const propertyEditorFrame = await new Promise<Frame>(async (resolve, reject) => {
+		const embeddedFrame = await new Promise<Frame>(async (resolve, reject) => {
 			const foundFrameTitles = new Set<string>();
 			timeoutTimeout = setTimeout(() => {
 				if (searching) {
 					searching = false;
 					reject(`Failed to find iframe "${title}" within timeout. Found: ${[...foundFrameTitles].map((title) => `"${title}"`).join(", ")}`);
 				}
-			}, 30000);
+			}, 120000);
 
 			searchLoop:
 			while (searching) {
@@ -29,6 +29,16 @@ export class EmbeddedFrameFinder {
 						if (frameTitle)
 							foundFrameTitles.add(frameTitle);
 						if (frameTitle == title) {
+							// Ensure this is a loaded frame with a Flutter app in it. If we don't do this
+							// we will sometimes find some kind of intermediate temporary frame and then
+							// fail later with "Frame was detached".
+							try {
+								await frame.frameLocator("iframe").locator("flt-semantics-placeholder").waitFor({ state: 'attached', timeout: 100 });
+							} catch (e) {
+								// If this fails, then this frame is no good.
+								continue;
+							}
+
 							searching = false;
 							clearTimeout(timeoutTimeout);
 							resolve(frame);
@@ -44,6 +54,6 @@ export class EmbeddedFrameFinder {
 			}
 		});
 
-		return propertyEditorFrame.frameLocator("iframe");
+		return embeddedFrame.frameLocator("iframe");
 	}
 }
