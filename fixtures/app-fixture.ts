@@ -19,6 +19,8 @@ export const test = base.extend<{
 			"--extensionDevelopmentPath",
 			TEST_CONFIG.FLUTTER_CODE_EXTENSION_DIR,
 			TEST_CONFIG.TEST_PROJECT_DIR,
+			"--skip-welcome",
+			"--skip-release-notes",
 		];
 		// console.log(`Launching VS Code as Electron app with args: ${args.join(" ")}`);
 		const electronApp = await electron.launch({

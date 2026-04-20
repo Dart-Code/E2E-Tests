@@ -3,5 +3,4 @@
 	"workbench.secondarySideBar.defaultVisibility": "hidden",
 	"editor.minimap.enabled": false,
 	"editor.fontSize": 12,
-	"workbench.welcomePage.experimentalOnboarding": false,
 }
