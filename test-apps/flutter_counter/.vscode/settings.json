@@ -3,6 +3,5 @@
 	"workbench.secondarySideBar.defaultVisibility": "hidden",
 	"editor.minimap.enabled": false,
 	"editor.fontSize": 12,
-	// Temp:
-	"dart.experimentalFlutterWidgetPreview": true,
+	"workbench.welcomePage.experimentalOnboarding": false,
 }
