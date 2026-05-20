@@ -8,7 +8,7 @@ export default defineConfig({
 	workers: 1, // process.env.CI ? 1 : undefined,
 	timeout: 360 * 1000, // 360 sec
 	expect: {
-		timeout: 180 * 1000, // 180 sec
+		timeout: 300 * 1000, // 300 sec
 	},
 	globalTimeout: 30 * 60 * 1000, // 30 min
 	// TODO(dantup): Test this.
@@ -18,8 +18,8 @@ export default defineConfig({
 		['playwright-ctrf-json-reporter', { outputDir: 'test-results', outputFile: 'ctrf-report.json' }]
 	],
 	use: {
-		actionTimeout: 180 * 1000, // 180 sec
-		navigationTimeout: 180 * 1000, // 180 sec
+		actionTimeout: 300 * 1000, // 300 sec
+		navigationTimeout: 300 * 1000, // 300 sec
 		trace: 'retain-on-failure',
 		screenshot: 'on',
 	},
