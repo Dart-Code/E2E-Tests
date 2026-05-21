@@ -19,12 +19,12 @@ export class WidgetPreviewPage extends EmbeddedFramePage {
 	}
 
 	/**
-	 * Ensures the given text appears on the page (by aria label).
+	 * Ensures the given text appears on the page.
 	 *
 	 * @param text - The text to find.
 	 */
 	async ensureText(text: string) {
-		const element = this.frame.locator(`[aria-label*='${text}']`);
+		const element = this.frame.getByText(text);
 		await element.waitFor({ state: 'attached' });
 		return element;
 	}
