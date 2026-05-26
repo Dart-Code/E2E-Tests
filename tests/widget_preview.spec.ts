@@ -8,12 +8,16 @@ test.describe("Widget Preview", () => {
 
 		await vsCodePage.openFile("lib/main.dart");
 
+		// Force trigger an event that updates the locate. Sometimes the Widget
+		// Preview doesn't seem to handle the existing open file.
+		const editor = vsCodePage.getEditor();
+		await editor.click();
+		await editor.getByText("MyApp").first().click();
+
 		// Ensure the standard label is visible in the embedded preview.
 		await widgetPreview.ensureText("You have pushed the button this many times");
 
 		// Modify the text and save.
-		const editor = vsCodePage.getEditor();
-		await editor.click();
 		await editor.getByText("You have pushed the button").click();
 		await editor.pressSequentially("insertedinsertedinserted");
 		await vsCodePage.saveAllFiles();
