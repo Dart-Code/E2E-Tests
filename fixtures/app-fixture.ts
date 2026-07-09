@@ -45,8 +45,12 @@ export const test = base.extend<{
 
 	vsCodePage: async ({ vsCodeApp }, use, testInfo) => {
 		const vsCodePage = new VSCodePage(vsCodeApp.page, testInfo);
+
 		// Wait for some sidebar icons to become visible.
+		await vsCodeApp.page.locator(".activitybar").first().waitFor({ state: "visible", timeout: 5000 });
+		await vsCodeApp.page.locator(".activitybar .actions-container").first().waitFor({ state: "visible", timeout: 5000 });
 		await vsCodeApp.page.locator(".activitybar .actions-container .action-item").first().waitFor({ state: "visible", timeout: 5000 });
+
 		// And some extra for hot file restore.
 		await vsCodeApp.page.waitForTimeout(500);
 
