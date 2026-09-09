@@ -8,11 +8,14 @@ test.describe("Widget Preview", () => {
 
 		await vsCodePage.openFile("lib/main.dart");
 
-		// Force trigger an event that updates the locate. Sometimes the Widget
-		// Preview doesn't seem to handle the existing open file.
+		// Force trigger an event that updates the location, and also a change to trigger a build.
+		// Sometimes the tests run fast enough that we can open a file without the widget preview
+		// watching yet and it never loads the previews for the current file.
 		const editor = vsCodePage.getEditor();
 		await editor.click();
-		await editor.getByText("MyApp").first().click();
+		await editor.getByText("Flutter Demo Home Page").click();
+		await editor.pressSequentially("!");
+		await vsCodePage.saveAllFiles();
 
 		// Ensure the standard label is visible in the embedded preview.
 		await widgetPreview.ensureText("You have pushed the button this many times");
