@@ -6,6 +6,9 @@ test.describe("Widget Preview", () => {
 		await widgetPreview.enableAccessibility();
 		await widgetPreview.waitForLoad();
 
+		// Allow some time for everything to settle...
+		await vsCodePage.waitForTimeout(3000);
+
 		await vsCodePage.openFile("lib/main.dart");
 
 		// Force trigger an event that updates the location, and also a change to trigger a build.
@@ -16,6 +19,9 @@ test.describe("Widget Preview", () => {
 		await editor.getByText("Flutter Demo Home Page").click();
 		await editor.pressSequentially("!");
 		await vsCodePage.saveAllFiles();
+
+		// Allow some time for everything to settle...
+		await vsCodePage.waitForTimeout(3000);
 
 		// Ensure the standard label is visible in the embedded preview.
 		await widgetPreview.ensureText("You have pushed the button this many times");
