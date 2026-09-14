@@ -53,7 +53,7 @@ jobs:
       working-directory: Flutter-Code
 
     - name: Checkout Flutter SDK
-      run: git clone https://github.com/flutter/flutter
+      run: git clone -b debug-widget-preview-in-dart-code-e2e-tests https://github.com/DanTup/flutter
 
     - name: Add Flutter SDK to PATH
       run: echo "${{github.workspace}}/flutter/bin" >> $GITHUB_PATH
@@ -93,6 +93,14 @@ jobs:
         path: |
           e2e-tests/playwright-report/
           e2e-tests/test-results/
+
+    - name: Upload log files
+      uses: actions/upload-artifact@v7
+      if: ${{ !cancelled() }}
+      with:
+        name: logs
+        path: |
+          e2e-tests/test-apps/logs
 
     - name: Set CTRF results as GitHub summary
       if: ${{ !cancelled() }}
