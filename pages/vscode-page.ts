@@ -58,11 +58,16 @@ export class VSCodePage {
 	}
 
 	async openCommandPalette() {
-		await this.page.locator(".command-center").click();
 		const input = this.page.getByPlaceholder("Search files by name");
-		// TODO(dantup): Without this wait, on CI we seem to sometimes
-		//  try typing in the input before it's visible, even though
-		//  fill() is supposed to wait for actionability 🤷‍♂️.
+
+		// We seem to be more reliable at opening the command palette if we click to remove
+		// focus from anything else (like web views), then hit escape in case it did open
+		// (sometimes it does not), then use Ctrl+P to trigger reliable.
+		await this.page.locator(".command-center").click();
+		await this.page.keyboard.press("Escape");
+		await this.page.keyboard.press(process.platform === "darwin" ? "Meta+P" : "Control+P");
+
+		// And wait for the input.
 		await input.waitFor({ state: "visible" });
 		return input;
 	}
