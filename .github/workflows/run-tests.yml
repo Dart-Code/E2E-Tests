@@ -53,7 +53,7 @@ jobs:
       working-directory: Flutter-Code
 
     - name: Checkout Flutter SDK
-      run: git clone https://github.com/flutter/flutter
+      run: git clone -b debug-new-pr https://github.com/DanTup/flutter
 
     - name: Add Flutter SDK to PATH
       run: echo "${{github.workspace}}/flutter/bin" >> $GITHUB_PATH
