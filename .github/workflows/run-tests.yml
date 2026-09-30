@@ -59,9 +59,9 @@ jobs:
       run: echo "${{github.workspace}}/flutter/bin" >> $GITHUB_PATH
 
     - run: dart --disable-analytics
-
-    - name: Run 'flutter doctor'
-      run: flutter doctor
+    - run: flutter --disable-analytics
+    - run: flutter update-packages
+    - run: flutter doctor -v
 
     - name: Create Sample App
       run: flutter pub get
@@ -93,6 +93,14 @@ jobs:
         path: |
           e2e-tests/playwright-report/
           e2e-tests/test-results/
+
+    - name: Upload log files
+      uses: actions/upload-artifact@v7
+      if: ${{ !cancelled() }}
+      with:
+        name: logs
+        path: |
+          e2e-tests/test-apps/logs
 
     - name: Set CTRF results as GitHub summary
       if: ${{ !cancelled() }}

@@ -3,4 +3,8 @@
 	"workbench.secondarySideBar.defaultVisibility": "hidden",
 	"editor.minimap.enabled": false,
 	"editor.fontSize": 12,
+	"dart.flutterWidgetPreviewLogFile": "../logs/widgetpreview.txt",
+	"dart.extensionLogFile": "../logs/extension.txt",
+	"dart.analyzerInstrumentationLogFile": "../logs/instrum.txt",
+	"dart.analyzerSessionLogFile": "../logs/session.txt",
 }
