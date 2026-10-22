@@ -16,7 +16,11 @@ export class EmbeddedFrameFinder {
 			timeoutTimeout = setTimeout(() => {
 				if (searching) {
 					searching = false;
-					reject(`Failed to find iframe "${title}" within timeout. Found: ${[...foundFrameTitles].map((title) => `"${title}"`).join(", ")}`);
+					if (foundFrameTitles.has(title)) {
+						reject(`Found iframe "${title}", but it did not contain a loaded Flutter app within timeout (did the server crash? See https://github.com/flutter/flutter/issues/194444)`);
+					} else {
+						reject(`Failed to find iframe "${title}" within timeout. Found: ${[...foundFrameTitles].map((title) => `"${title}"`).join(", ")}`);
+					}
 				}
 			}, 120000);
 
